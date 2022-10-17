@@ -1,0 +1,199 @@
+1).mysql> delimiter //
+mysql> create procedure getemp (in EmpNos int)
+    -> select * from employee where EmpNo=EmpNos;
+    -> end //
+Query OK, 0 rows affected (0.24 sec)
+mysql> delimiter ;
+call getemp(17777);
++-------+---------+------+----------+-----------+--------+
+| EmpNo | EmpName | sex  | salary   | address   | DeptNo |
++-------+---------+------+----------+-----------+--------+
+| 17777 | EEEEE   | M    | 75000.00 | Hyderabad |      4 |
++-------+---------+------+----------+-----------+--------+
+
+2).mysql> delimiter //
+mysql> create procedure addemp(in EmpNo int, in EmpName nvarchar(200), in sex enum('M','F') , in salary numeric(9,2), in address nvarchar(200), in DeptNo int)
+    -> insert into employee values(empNo,EmpName,sex,salary,address,DeptNo);
+    -> end //
+Query OK, 0 rows affected, 2 warnings (0.09 sec)
+mysql> delimiter ;
+mysql> call addemp(55555,'GGGGG','M',27000.00,'Delhi',5);
+select*from employee;
++-------+---------+------+-----------+-----------+--------+
+| EmpNo | EmpName | sex  | salary    | address   | DeptNo |
++-------+---------+------+-----------+-----------+--------+
+| 11111 | AAAAA   | M    |  92000.00 | Chennai   |      5 |
+| 12222 | BBBBB   | F    |  25000.00 | Kolkata   |      2 |
+| 12345 | CCCCC   | M    | 101000.00 | Chennai   |      3 |
+| 14444 | DDDDD   | F    |  74700.00 | Bangalore |      1 |
+| 17777 | EEEEE   | M    |  75000.00 | Hyderabad |      4 |
+| 33333 | FFFFF   | M    |  87000.00 | Mumbai    |      3 |
+| 55555 | GGGGG   | M    |  27000.00 | Delhi     |      5 |
++-------+---------+------+-----------+-----------+--------+
+
+
+3).mysql> delimiter //
+mysql> create procedure addsal(in empNos int, in s numeric(9,2))
+    -> update employee set salary=salary+s where Empno=Empnos;
+    -> end //
+Query OK, 0 rows affected (0.12 sec)
+mysql> delimiter ;
+mysql> call addsal(14444,57000);
+mysql> select*from employee;
++-------+---------+------+-----------+-----------+--------+
+| EmpNo | EmpName | sex  | salary    | address   | DeptNo |
++-------+---------+------+-----------+-----------+--------+
+| 11111 | AAAAA   | M    |  92000.00 | Chennai   |      5 |
+| 12222 | BBBBB   | F    |  25000.00 | Kolkata   |      2 |
+| 12345 | CCCCC   | M    | 101000.00 | Chennai   |      3 |
+| 14444 | DDDDD   | F    | 131700.00 | Bangalore |      1 |
+| 17777 | EEEEE   | M    |  75000.00 | Hyderabad |      4 |
+| 33333 | FFFFF   | M    |  87000.00 | Mumbai    |      3 |
+| 55555 | GGGGG   | M    |  27000.00 | Delhi     |      5 |
++-------+---------+------+-----------+-----------+--------+
+
+4)mysql> delimiter //
+mysql> create procedure deleteemp(in EmpNos int)
+    -> delete from employee where Empno=EmpNos;
+    -> end //
+Query OK, 0 rows affected (0.08 sec)
+mysql> delimiter ;
+mysql> call deleteemp(33333);
+mysql> select * from employee;
++-------+---------+------+-----------+-----------+--------+
+| EmpNo | EmpName | sex  | salary    | address   | DeptNo |
++-------+---------+------+-----------+-----------+--------+
+| 11111 | AAAAA   | M    |  92000.00 | Chennai   |      5 |
+| 12222 | BBBBB   | F    |  25000.00 | Kolkata   |      2 |
+| 12345 | CCCCC   | M    | 101000.00 | Chennai   |      3 |
+| 14444 | DDDDD   | F    |  74700.00 | Bangalore |      1 |
+| 17777 | EEEEE   | M    |  75000.00 | Hyderabad |      4 |
+| 55555 | GGGGG   | M    |  27000.00 | Delhi     |      5 |
++-------+---------+------+-----------+-----------+--------+
+
+5).mysql> delimiter //
+mysql> create function maxsal() returns int deterministic 
+    -> begin
+    -> declare ans int;
+    -> select max(salary) from employee into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.09 sec)
+mysql> delimiter ;
+mysql> select maxsal();
++----------+
+| maxsal() |
++----------+
+|   131700 |
++----------+
+
+6).mysql> delimiter //
+mysql> create function countemp() returns int deterministic
+    -> begin
+    -> declare ans int;
+    -> select count(*) from employee into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.11 sec)
+mysql> delimiter ;
+mysql> select countemp();
++------------+
+| countemp() |
++------------+
+|          6 |
++------------+
+
+7)mysql> delimiter //
+mysql> create function getsal(EmpNos int) returns int deterministic
+    -> begin
+    -> declare ans int;
+    -> select salary from employee where Empno=EmpNos into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.13 sec)
+mysql> delimiter ;
+mysql> select getsal(12345);
++---------------+
+| getsal(12345) |
++---------------+
+|        101000 |
++---------------+
+
+8).mysql> delimiter //
+mysql> create function avgsal(dno int) returns int deterministic
+    -> begin
+    -> declare ans int;
+    -> select avg(salary) from employee where Deptno=dno into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.13 sec)
+mysql> delimiter ;
+mysql> select avgsal(5);
++-----------+
+| avgsal(5) |
++-----------+
+|     59500 |
++-----------+
+
+9).mysql> delimiter //
+mysql> create procedure getemp2(in dno int)
+    -> select* from employee where DeptNo=dno;
+    -> end //
+Query OK, 0 rows affected (0.12 sec)
+mysql> delimiter ;
+mysql> call getemp2(5);
++-------+---------+------+----------+---------+--------+
+| EmpNo | EmpName | sex  | salary   | address | DeptNo |
++-------+---------+------+----------+---------+--------+
+| 11111 | AAAAA   | M    | 92000.00 | Chennai |      5 |
+| 55555 | GGGGG   | M    | 27000.00 | Delhi   |      5 |
++-------+---------+------+----------+---------+--------+
+
+10)mysql> delimiter //
+mysql> create procedure highsal()
+    -> select max(salary), DeptNo from employee group by DeptNo;
+    -> end //
+Query OK, 0 rows affected (0.12 sec)
+mysql> delimiter ;
+mysql> call highsal();
++-------------+--------+
+| max(salary) | DeptNo |
++-------------+--------+
+|   131700.00 |      1 |
+|    25000.00 |      2 |
+|   101000.00 |      3 |
+|    75000.00 |      4 |
+|    92000.00 |      5 |
++-------------+--------+
+
+11)mysql> delimiter //
+mysql> create function salgreat() returns int deterministic
+    -> begin
+    -> declare ans int;
+    -> select count(*) from employee where salary>50000 into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.11 sec)
+mysql> delimiter ;
+mysql> select salgreat();
++------------+
+| salgreat() |
++------------+
+|          4 |
++------------+
+
+12).mysql> delimiter //
+mysql> create function chennai() returns int deterministic
+    -> begin
+    -> declare ans int;
+    -> select count(*) from employee natural join department where location="Chennai" into ans;
+    -> return ans;
+    -> end //
+Query OK, 0 rows affected (0.11 sec)
+mysql> delimiter ;
+mysql> select chennai();
++-----------+
+| chennai() |
++-----------+
+|         3 |
++-----------+
