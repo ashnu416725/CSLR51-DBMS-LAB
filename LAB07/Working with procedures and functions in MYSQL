@@ -1,0 +1,15 @@
+Working with Procedures & Functions in MySQL
+Consider the Employee (EmpNo, EmpName, Sex, Salary, Address, DeptNo)
+ Department (DeptNo, DeptName, Location)
+1. Create a procedure to display the details of an employee record form employee table for a given employee number.
+2. Create a procedure to add details of a new employee into employee table
+3. Write a procedure raise_sal which increases the salary of an employee. It accepts an employee number and salary increase amount. It uses the employee number to find the current salary from the EMPLOYEE table and update the salary.
+4. Create a procedure to delete a record form employee table for a given employee name.
+5. Write a function to display maximum salary of employees from the employee table.
+6. Write a function to display the number of employees working in the Organization.
+7. Write a function to display salary of an employee with the given employee number.
+8. Write a function average which takes DeptNo as input argument and returns the average salary received by the employee in the given department.
+9. Write a procedure which takes the DeptNo as input parameter and lists the names of all employees belonging to that department.
+10. Write procedure that lists the highest salary drawn by an employee in each of the departments. It should make use of a named procedure dept_highest which finds the highest salary drawn by an employee for the given department.
+11. Write a function that will display the number of employees with salary more than 50k.
+12. Write a function that will display the count of the number of employees working in Chennai.
